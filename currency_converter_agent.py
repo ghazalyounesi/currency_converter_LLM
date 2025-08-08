@@ -46,11 +46,8 @@ Examples of informal to ISO currency mappings:
     response = llm.invoke(prompt)
     raw_output = response.content.strip()  
 
-    json_match = re.search(r"{\s*\"amount\".*?}", raw_output, re.DOTALL)
-    if not json_match:
-       raise ValueError("Model response is not valid JSON:\n" + raw_output)
+    clean_output = re.sub(r"^```(?:json)?|```$", "", raw_output, flags=re.MULTILINE).strip()
 
-    clean_output = json_match.group(0)
     try:
         print("Raw model response:", raw_output)
         print("clean code:  ",clean_output)
